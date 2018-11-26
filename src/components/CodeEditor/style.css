@@ -1,0 +1,30 @@
+.ace-monokai .ace_string{
+	color: #0bd5e6 !important;
+}
+
+.ace-monokai .ace_constant.ace_character, 
+.ace-monokai .ace_constant.ace_language, 
+.ace-monokai .ace_constant.ace_numeric, 
+.ace-monokai .ace_constant.ace_other {
+    color: #795e9b !important;
+}
+
+.ace-monokai{
+	background-color: #2e3440 !important;
+}
+
+.ace-monokai .ace_marker-layer .ace_active-line,
+.ace-monokai .ace_gutter-active-line {
+    background: none !important;
+}
+.ace_gutter-cell{
+	color: #393f48 !important;
+}
+
+.ace-monokai .ace_gutter {
+    background: #60656e !important;
+}
+
+.ace-editor{
+	font-family: 'Source Code Pro' !important;
+}

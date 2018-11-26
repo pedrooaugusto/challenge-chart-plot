@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Syntax HighLinthing</title>
+	<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+	<style type="text/css">
+		*{
+			margin: 0px;
+			padding: 0px;
+			font-family: 'Source Code Pro';
+			box-sizing: border-box;
+		}
+		body{
+		}
+		.editor-wrapper{
+			margin: 15px;
+			border: solid 1px #333333;
+			width: 550px;
+			height: 300px;
+			background-color: #2e3440;
+			overflow-y: auto;
+		}
+		.columns{
+			min-height: 100%;
+			height: auto;
+			display: flex;
+		}
+
+
+		.content-wrapper{
+			height: auto;
+			width: calc(100% - 30px);
+		}
+
+		.line-counter-wrapper{
+			background-color: #60656e;
+		}
+
+		.line-counter{
+			display: flex;
+			flex-flow: column;
+			color: #393f48;
+			width: 30px;
+			padding-top: 10px;
+			padding-left: 0px;
+			padding-right: 0px;
+			position: relative;
+		}
+
+
+		.line-counter span{
+			text-align: right;
+			display: block;
+			padding-right: 5px;
+			height: 20px;
+			font-size: 14px;
+		}
+
+		.content{
+			color: white;
+			height: auto;
+			min-height: 100%;
+			padding: 10px;
+			outline: none !important;
+			counter-reset: line;
+		}
+
+		.content div{
+			position: relative;
+
+    		counter-increment: line;
+
+    		white-space: pre-wrap;
+		}
+		
+		.content div:before{
+		    content: counter(line);
+			position: absolute;
+		    width: 30px;
+		    top: 0px;
+		    left: -40px;
+		    text-align: right;
+			display: block;
+			padding-right: 5px;
+			height: 100%;
+			font-size: 14px;
+			box-sizing: border-box;
+			color: #393f48;
+		}
+
+		.content .line .number{
+			color: #795e9b;
+		}
+
+		.content div:first-child:before,
+		{
+			content: '';
+		}
+
+		.content div.active:before{
+			background: #a7a3a3;
+		}
+	</style>
+</head>
+<body>
+	<div class = "editor-wrapper">
+		<div class = "columns">
+			<div class = "line-counter-wrapper">
+				<div class = "line-counter">
+					<span>1</span>
+				</div>
+			</div>
+			<div class = "content-wrapper">
+				<div class = "content" contenteditable="true">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+
+
+	function placeCaretAtEnd(el) {
+		el.focus();
+		if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+			const range = document.createRange();
+			range.selectNodeContents(el);
+			range.collapse(false);
+			const sel = window.getSelection();
+			sel.removeAllRanges();
+			sel.addRange(range);
+		} else if (typeof document.body.createTextRange != "undefined") {
+			const textRange = document.body.createTextRange();
+			textRange.moveToElementText(el);
+			textRange.collapse(false);
+			textRange.select();
+		}
+	}
+
+
+	document.addEventListener('DOMContentLoaded', function () {
+
+		const $s = s => {
+			return document.querySelectorAll.apply(document, [s]);
+		};
+
+		const $ = s => {
+			return document.querySelector.apply(document, [s]);
+		};
+
+
+		$('.content').addEventListener('keyup', function(e){
+			if( this.firstChild && this.firstChild.nodeName === "#text"){
+				let val = this.firstChild.nodeValue;
+				this.firstChild.remove();
+				this.insertAdjacentHTML('afterBegin', "<div class='line'>"+val+"</div>");
+				placeCaretAtEnd(this);
+			}else if(this.firstChild && this.firstChild.nodeName === "BR"){
+				this.firstChild.remove();
+				this.insertAdjacentHTML('afterBegin', "<div class='line'><br></div>");
+			}
+
+			let lines = this.querySelectorAll('div');
+
+			for(let line of lines){
+				let numberRegex = /(?<=:( *))[0-9]+(?=(}|,))/gm;
+				let m = null;
+
+				while( (m = numberRegex.exec(line.innerHTML)) ){
+					line.innerHTML = line.innerHTML.replace(m[0], "<span class='number'>"+m[0]+"</span>");
+					console.log(m);
+				}
+			}
+		});
+
+
+		$('.content').addEventListener('paste', function(e){
+		    
+		    e.preventDefault();
+
+		    let text = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+		    let lines = text.split('\n');
+
+		    let lines2 = lines.map(a => "<div class = 'line'>" + a + "</div>");
+
+		    text = lines2.reduce((a, b) => a + b);
+
+		    let nodes = lines.map(a => {
+		    	let c = document.createElement('div');
+		    	c.classList.add('line');
+		    	c.innerText = a;
+		    	return c;
+		    });
+
+		    let d = window.getSelection().anchorNode;
+
+		    if(d && d.nodeName !== "#text" && d.matches('.content .line') && d.textContent === ""){
+		    	d.replaceWith(...nodes);
+		    }else{
+		    	document.execCommand("insertHTML", false, text);
+		    }
+
+		});
+
+	});
+</script>
+
+</html>
