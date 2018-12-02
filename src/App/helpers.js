@@ -64,6 +64,13 @@ class EventStreamList{
 
 		return null;
 	}
+
+	getList(){
+		
+		if(this.list.length > 0)
+			return this.list;
+		return [new EventStream({})];
+	}
 }
 
 class EventStream{
@@ -97,7 +104,7 @@ class EventStream{
 			const seriesID = (pairName + " " + variable).trim();
 
 			const point = {
-				x: evt.timestamp, 
+				x: 10800000 + (evt.timestamp - this.span.begin), 
 				y: evt[variable]
 			};
 

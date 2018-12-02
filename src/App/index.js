@@ -16,9 +16,13 @@ class App extends Component {
 				value: defaultValue
 			},
 			chart: {
-				eventStreamList: null
+				eventStreamList: new Helpers.EventStreamList()
 			}
 		};
+	}
+
+	componentDidMount(){
+		this.buttonClick();
 	}
 
 	editorOnChange = value => {
@@ -30,7 +34,6 @@ class App extends Component {
 				value
 			}
 		}));
-
 	}
 
 	/*
@@ -68,10 +71,6 @@ class App extends Component {
 		}));
 	}
 
-	jsonToDataSet = (events, cb) => {
-
-	}
-
 	render() {
 		return (
 			<React.Fragment>
@@ -85,12 +84,17 @@ class App extends Component {
 				<Chart 
 					{...this.state.chart}/>
 
-				<button onClick = {this.buttonClick}>Hello, Jen!</button>
+				<footer className = "footer">
+					<button 
+						onClick = {this.buttonClick}>
+						GENERATE CHART
+					</button>
+				</footer>
 
 			</React.Fragment>
-			);
-		}
+		);
 	}
+}
 
 export default App;
 

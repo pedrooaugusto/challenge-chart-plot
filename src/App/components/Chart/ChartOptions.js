@@ -6,14 +6,23 @@ export const common = {
 		}
 	},
 	legend: false,
-	legendCallbackd: function (chart) {
-		return "<p>dff</p>";
+	legendCallback: function (chart) {
+		const lis = chart.data.datasets.map(dataset => {	
+			return `<li style = "color:${dataset.backgroundColor}";>
+						<span style = "background-color:${dataset.backgroundColor}";></span>
+						${dataset.label}
+					</li>`;
+
+		}).join("");
+
+		return `<ul class="${chart.id}-legend">${lis}</ul>`;
 	},
 	scales:{
 		yAxes: [{
 			ticks: {
 				display: false,
-				maxTicksLimit: 5
+				maxTicksLimit: 5,
+				beginAtZero: true,
 			},
 			gridLines: {
 				drawBorder: false,
@@ -29,8 +38,8 @@ export const common = {
 			time: {
 				unit: 'minute',
 				displayFormats:{
-					minute: 'hh:mm'
-				}
+					minute: 'HH:mm'
+				},
 			},
 			gridLines: {
 				display: false,
@@ -39,6 +48,9 @@ export const common = {
 			},
 			ticks:{
 				display: true,
+				autoSkip: true,
+        		maxTicksLimit: 15,
+        		beginAtZero: true
 			}
 		}]
 	},
@@ -60,10 +72,10 @@ export const commonDataset = {
 	borderDash: [],
 	borderDashOffset: 0.0,
 	borderJoinStyle: 'miter',
-	pointBorderWidth: 8,
-	pointHoverRadius: 8,
+	pointBorderWidth: 6,
+	pointHoverRadius: 6,
 	pointHoverBorderWidth: 0.1,
-	pointRadius: 4,
-	pointHitRadius: 4,
+	pointRadius: 3,
+	pointHitRadius: 3,
 	borderWidth: 2,	
 }

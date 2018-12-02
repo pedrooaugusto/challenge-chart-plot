@@ -62,36 +62,11 @@ class Chart extends React.Component{
 
 	render(){
 
-		/* Render empty chart */
-		if( !this.props.eventStreamList ){
-			
-			const data = {
-				datasets: []
-			};
-			
-			return (
-				<div className = "chart-wrapper">
-					<div className = "line-chart-wrapper">
-						<Line 
-							data = {data}
-							width = {600}
-							height = {265} 
-							options = {common}
-							ref = {chartRef => this.chartRef[0] = chartRef}/>
-					</div>
-					<div 
-						className = "legend-wrapper"
-						ref = {lg => this.legendContainer = lg}>
-					</div>
-				</div>
-			);
-		}
-
-		const {eventStreamList: {list}} = this.props;
+		const {eventStreamList} = this.props;
 
 		return(
 			<div className = "charts-">
-				{list.map( (v, k) => {
+				{eventStreamList.getList().map( (v, k) => {
 					
 					const data = {
 						datasets: v.datasets.toChartFormat()
@@ -103,6 +78,7 @@ class Chart extends React.Component{
 							<div className = "line-chart-wrapper">
 								<Line 
 									data = {data}
+									width ={600}
 									height = {265} 
 									key = {k}
 									options = {common}
