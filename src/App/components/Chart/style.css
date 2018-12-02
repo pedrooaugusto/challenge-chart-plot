@@ -1,3 +1,17 @@
 .chart-wrapper{
 	padding: 30px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.line-chart-wrapper{
+	width: 74%;
+}
+
+.legend-wrapper{
+	width: 24%;
+}
+
+.legend-wrapper ul{
+	list-style-type: none;
 }

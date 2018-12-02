@@ -14,6 +14,9 @@ class App extends Component {
 			codeEditor:{
 				defaultValue,
 				value: defaultValue
+			},
+			chart: {
+				eventStreamList: null
 			}
 		};
 	}
@@ -52,13 +55,17 @@ class App extends Component {
 
 		console.log(eventArray);
 
-		Helpers.eventStreamToDataset(eventArray, function (err, datasets) {
-			if(err){
-				console.log(err);
-			}else{
-				console.log(datasets);
+		const eventStreamList = new Helpers.EventStreamList(eventArray);
+		eventStreamList.process();
+
+		console.log(eventStreamList);
+
+		this.setState(prevState => ({
+			...prevState,
+			chart:{
+				eventStreamList
 			}
-		});
+		}));
 	}
 
 	jsonToDataSet = (events, cb) => {
@@ -75,7 +82,8 @@ class App extends Component {
 					onChange = {this.editorOnChange}
 					value = {this.state.codeEditor.value} />
 				
-				<Chart />
+				<Chart 
+					{...this.state.chart}/>
 
 				<button onClick = {this.buttonClick}>Hello, Jen!</button>
 

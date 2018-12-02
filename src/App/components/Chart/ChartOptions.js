@@ -5,6 +5,10 @@ export const common = {
 			usePointStyle: true
 		}
 	},
+	legend: false,
+	legendCallbackd: function (chart) {
+		return "<p>dff</p>";
+	},
 	scales:{
 		yAxes: [{
 			ticks: {
@@ -61,48 +65,5 @@ export const commonDataset = {
 	pointHoverBorderWidth: 0.1,
 	pointRadius: 4,
 	pointHitRadius: 4,
-	borderWidth: 2,
-				
+	borderWidth: 2,	
 }
-
-// defaults.global.legend.position = 'right';
-// defaults.global.legend.labels.usePointStyle = true;
-// defaults.line.scales.yAxes = [{
-// 	ticks: {
-// 		display: false, /* Display values of the y axis */
-// 		maxTicksLimit: 5 /* 
-// 							Max number of grid (horizontal ones) 
-// 							lines in the y axis 
-// 						*/
-// 	},
-// 	gridLines:{
-// 		drawBorder: false, /* Side border (square border), turning off */
-// 		lineWidth: 0.9,
-// 		color: "rgba(0,0,0,0.4)",
-// 		tickMarkLength: 15,
-// 		zeroLineWidth: 2,
-// 		zeroLineColor: "rgba(0,0,0,0.5)"
-// 	}
-// }];
-
-// defaults.line.scales.xAxes = [{
-// 	type: 'time',
-// 	time: {
-// 		unit: 'minute',
-// 		displayFormats:{
-// 			minute: 'hh:mm'
-// 		}
-// 	},
-// 	gridLines: {
-// 		display: false,
-// 		drawBorder: false,
-// 		tickMarkLength: 15,
-// 	},
-// 	ticks:{
-// 		display: true,
-// 		callbackh: function (value, index, values) {
-// 			return "$" + value;
-// 		}
-// 	}
-
-// }];

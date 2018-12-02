@@ -1,95 +1,179 @@
-export function eventStreamToDataset(events, cb) {
+import {commonDataset as datasetOptions} from './components/Chart/ChartOptions';
+
+class EventStreamList{
 	
-	const eventStreams = [];
+	constructor(events){
+		this.list 	= [];
+		this.events = events;
+		this.top 	= null;
+	}
 
-	for(let evt of events){
-		
-		const {type} = evt;
+	process(){
 
-		const noActiveEventStream = eventStreams.length === 0 || eventStreams[0].fineshed;
+		for(let evt of this.events){
 
-		if( (type === "start" && !noActiveEventStream) ){
+			const {type} = evt;
 
-			return cb({
-				msg: `Error: Cannot procces a data, span or a stop event ` +
-					 `without an open event stream.`
-			}, null);
-
-		}else if( (type === "data" || type === "span" || type === "stop") && noActiveEventStream ){
-
-			return cb({
-				msg: `Error: Cannot open a event stream while the current one is not done.`
-			}, null);
-		}
-
-		if(type === "start"){
+			const err = this.canPerformEvent(type);
 			
-			/* Adds a new event stream */
-			eventStreams.unshift( createEventStream(evt) );
+			if(err)
+				return err;
 
-		}else if(type === "span"){
-
-			/* Updates the chart visible date range */
-			eventStreams[0].span = {
-				begin: evt.begin,
-				end: evt.end
-			};
-
-		}else if(type === "data"){
-
-			const {begin, end} = eventStreams[0].span;
+			switch(type){
 			
-			/* Check chart plot boundaries */
-			if(evt.timestamp <= end && evt.timestamp >= begin){
+				case 'start':
+					this.list.unshift( new EventStream(evt) );
+					this.top = this.list[0];
+				break;
 
-				const {select, group} = eventStreams[0];
-
-				const groupID = group.reduce((carry, el) => {
-
-					return evt.hasOwnProperty(el) ? carry + " " + evt[el] : carry;
 				
-				}, "");
+				case 'span':
+					this.top.updateSpan(evt);
+				break;
 
-				for(let s of select){
-					
-					if( evt.hasOwnProperty(s) ){
-						
-						const seriesID = (groupID + " " + s).trim();
+				
+				case 'data':
+					this.top.updateDataset(evt);
+				break;
 
-						const point = {
-							x: evt.timestamp, 
-							y: evt[s]
-						};
-						
-						if( eventStreams[0].datasets.hasOwnProperty(seriesID) )
+				
+				case 'stop':
+					this.top.stop();
+				break;
 
-							eventStreams[0].datasets[seriesID].data.push(point);							
-						else
-
-							eventStreams[0].datasets[seriesID] = { data: [point] };
-					}
-				}
-
+				
+				default:
+					console.log('Warning: Invalid event type: '+type);
 			}
 
-		}else if(type === "stop"){
-
-			eventStreams[0].fineshed = true;
 		}
 	}
 
-	return cb(null, eventStreams);
+	canPerformEvent(type){
+
+		const noActiveEventStream = this.list.length === 0 || this.top.fineshed;
+
+		if( (type === "start" && !noActiveEventStream) )
+
+			return  `Error: Cannot procces a data, span or a stop event ` +
+					 `without an open event stream.`;
+
+		else if( (type === "data" || type === "span" || type === "stop") && noActiveEventStream )
+
+			return `Error: Cannot open a event stream while the current one is not done.`;
+
+		return null;
+	}
 }
 
-function createEventStream(evt){
+class EventStream{
+	
+	constructor({timestamp, type, select, group}){
+		this.timestamp = timestamp;
+		this.type      = type;
+		this.select    = select;
+		this.group     = group;
+		this.datasets  = new Datasets();
+		this.fineshed  = false;
+		this.span 	   = null;
+	}
 
-	return {
-		...evt,
-		span: {
-			begin: Number.MIN_SAFE_INTEGER,
-			end:   Number.MAX_SAFE_INTEGER
-		},
-		fineshed: false,
-		datasets: {},
-	};
+	updateSpan({begin, end}){
+		this.span = {begin, end};
+	}
+
+	updateDataset(evt){
+		
+		if( !this.checkBondaries(evt) )
+			return;
+
+		const pairName = this.getPairNameFromEvent(evt);
+
+		for(let variable of this.select){
+			
+			if ( !evt.hasOwnProperty(variable) )
+				continue;
+
+			const seriesID = (pairName + " " + variable).trim();
+
+			const point = {
+				x: evt.timestamp, 
+				y: evt[variable]
+			};
+
+			this.datasets.insert(seriesID, point);
+		}
+	}
+
+	checkBondaries({timestamp}){
+		return timestamp >= this.span.begin && timestamp <= this.span.end;
+	}
+
+	getPairNameFromEvent(evt){
+		return this.group.reduce((carry, el) => {
+			if( evt.hasOwnProperty(el) )
+				return carry + " " + evt[el];
+			return carry;
+		}, "");
+	}
+
+	stop(){
+		this.fineshed = true;
+	}
+}
+
+
+class Datasets{
+	
+	constructor(){
+		this.datasets = new Map();
+	}
+
+	insert(datasetID, point){
+		
+		if( this.datasets.has(datasetID) )
+			this.datasets.get(datasetID).data.push(point);	
+		else
+			this.datasets.set(datasetID, this.createDataset(point, datasetID));
+	}
+
+	createDataset(firstPoint, seriesID){
+		
+		const label = this.generateDatasetLabel(seriesID);
+		const color = this.randomColor();
+
+		return {
+			label,
+			data: [firstPoint],
+			backgroundColor: color,
+			borderColor: color,
+			pointBorderColor: color,
+			pointHoverBackgroundColor: color,
+			...datasetOptions
+		};
+	}
+
+	generateDatasetLabel(seriesID){
+		return seriesID.replace(/_/g, ' ')
+			.split(" ")
+			.map(a => a[0].toUpperCase() + a.substr(1))
+			.join(" ");
+	}
+
+	randomColor(){
+
+		const r = Math.floor(Math.random()*256);
+		const g = Math.floor(Math.random()*256);
+		const b = Math.floor(Math.random()*256);
+
+		return `rgb(${r}, ${g}, ${b})`;
+	}
+
+	toChartFormat(){
+		return Array.from( this.datasets.values() );
+	}
+}
+
+export {
+	EventStreamList
 }
