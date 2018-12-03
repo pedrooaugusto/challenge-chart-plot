@@ -1,11 +1,11 @@
+/* Just some options to make ChartJS work properly */
+
+
+/* Options to apply direct to Char instance */
 export const common = {
-	legend:{
-		position: 'right',
-		labels:{
-			usePointStyle: true
-		}
-	},
+
 	legend: false,
+
 	legendCallback: function (chart) {
 		const lis = chart.data.datasets.map(dataset => {	
 			return `<li style = "color:${dataset.backgroundColor}";>
@@ -17,6 +17,7 @@ export const common = {
 
 		return `<ul class="${chart.id}-legend">${lis}</ul>`;
 	},
+
 	scales:{
 		yAxes: [{
 			ticks: {
@@ -54,7 +55,9 @@ export const common = {
 			}
 		}]
 	},
+
 	maintainAspectRatio: false, 
+	
 	layout: {
 		padding:{
 	    	left: 0,
@@ -65,6 +68,7 @@ export const common = {
     }
 }
 
+/* common options to all datasets */
 export const commonDataset = {
 	fill: false,
 	lineTension: 0.1,

@@ -3,7 +3,7 @@ import Header from './components/Header';
 import CodeEditor from './components/CodeEditor';
 import Chart from './components/Chart';
 import JSON5 from 'json5';
-import * as Helpers from './helpers';
+import * as Helpers from './EventStreamList';
 import './style.css';
 
 class App extends Component {
@@ -21,6 +21,7 @@ class App extends Component {
 		};
 	}
 
+	/* starts the graphic with a default value */
 	componentDidMount(){
 		this.buttonClick();
 	}
@@ -41,34 +42,54 @@ class App extends Component {
 		into a valid JSON string with all strings
 		and keys between double quotes and comma
 		between events.
+
+		Then converts that new string into
+		js array of events.
+
+		And finally converts that array of events
+		into a valid dataset object to be used in
+		ChartJS.
 	*/
 	buttonClick = () => {
 		
-		/* get the value from ace editor */
-		let {value} = this.state.codeEditor;
+		try{
+			/* Get the value from ace editor */
+			let {value} = this.state.codeEditor;
 
-		/* add a comma between events and put
-		   the whole string between brackets.
-		   Now its a valid array! 
-		*/
-		value = '[' + value.replace(/}\s*{/g, '},{') + ']';
+			/* Add a comma between events and put
+			   the whole string between brackets.
+			   Now its a valid json array!
+			*/
+			value = '[' + value.replace(/}\s*{/g, '},{') + ']';
 
-		/* Convert the 'relaxed json' string into a js object */
-		let eventArray = JSON5.parse(value);
+			/* Converts the 'relaxed json string' 
+			   string into a valid JS object. 
+			*/
+			let eventArray = JSON5.parse(value);
 
-		console.log(eventArray);
+			/* Creates a EventStreamList instance and pass the
+			   value of ace code  
+			*/
+			const eventStreamList = new Helpers.EventStreamList(eventArray);
+			
+			/* some magic! */
+			const err = eventStreamList.process();
 
-		const eventStreamList = new Helpers.EventStreamList(eventArray);
-		eventStreamList.process();
-
-		console.log(eventStreamList);
-
-		this.setState(prevState => ({
-			...prevState,
-			chart:{
-				eventStreamList
+			if(err){
+				alert(err);
 			}
-		}));
+
+			/* Updates the state with a ChartJS dataset */
+			this.setState(prevState => ({
+				...prevState,
+				chart:{
+					eventStreamList
+				}
+			}));
+
+		}catch(err){
+			alert(err);
+		}
 	}
 
 	render() {

@@ -1,4 +1,15 @@
-import {commonDataset as datasetOptions} from './components/Chart/ChartOptions';
+/*
+	Here is where the magic happens!
+
+	Takes a array of event streams and
+	transform it into a valid dataset
+	to be used int ChartJS.
+*/
+
+
+import {
+	commonDataset as datasetOptions
+} from './components/Chart/ChartOptions';
 
 class EventStreamList{
 	
@@ -8,6 +19,9 @@ class EventStreamList{
 		this.top 	= null;
 	}
 
+	/* Procces each event informed in the
+	   editor.
+	*/
 	process(){
 
 		for(let evt of this.events){
@@ -16,8 +30,10 @@ class EventStreamList{
 
 			const err = this.canPerformEvent(type);
 			
-			if(err)
+			if(err){
+				this.list = [];
 				return err;
+			}
 
 			switch(type){
 			
@@ -47,20 +63,23 @@ class EventStreamList{
 			}
 
 		}
+
+		return null;
 	}
 
+	/* Checking for some crazy situations */
 	canPerformEvent(type){
 
 		const noActiveEventStream = this.list.length === 0 || this.top.fineshed;
 
 		if( (type === "start" && !noActiveEventStream) )
 
-			return  `Error: Cannot procces a data, span or a stop event ` +
-					 `without an open event stream.`;
+			return `Error: Cannot open a event stream while the current one is not done.`;
 
 		else if( (type === "data" || type === "span" || type === "stop") && noActiveEventStream )
 
-			return `Error: Cannot open a event stream while the current one is not done.`;
+			return  `Error: Cannot procces a data, span or a stop event ` +
+					 `without an open event stream.`;
 
 		return null;
 	}

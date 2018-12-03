@@ -1,45 +1,7 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import { defaults } from 'react-chartjs-2';
-import {common, commonDataset} from './ChartOptions';
+import {common} from './ChartOptions';
 import './style.css';
-
-const dagta = {
-	datasets: [{
-		label: 'Chrome on Iphone Max Time',
-		backgroundColor: 'rgba(75,192,192,1)',
-		borderColor: 'rgba(75,192,192,1)',
-		pointBorderColor: 'rgba(75,192,192,1)',
-		pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-		data: [
-			{
-				x: 60000,
-				y: 2
-			},
-			{
-				x: 90000,
-				y: 1.5
-			},
-			{
-				x: 100000,
-				y: 1.75
-			},
-			{
-				x: 120000,
-				y: 0.8
-			},
-			{
-				x: 130000,
-				y: 1
-			},
-			{
-				x: 240000,
-				y: 0.5
-			}
-		],
-		...commonDataset
-	}]
-};
 
 class Chart extends React.Component{
 
@@ -49,15 +11,14 @@ class Chart extends React.Component{
 		this.legendRef = [];
 	}
 
-	componentDidMount(){
-		console.log(this.chartRef);
-	}
 
+	/* Render custom captions for each chart */
 	componentDidUpdate(prevProps, prevState){
 		/* sorry about that :(  */
 		for(let i = 0; i < this.chartRef.length; i++)
 			if( this.chartRef[i] && this.legendRef[i] )
-				this.legendRef[i].innerHTML = this.chartRef[i].chartInstance.generateLegend();
+				this.legendRef[i].innerHTML = 
+					this.chartRef[i].chartInstance.generateLegend();
 	}
 
 	render(){
@@ -66,6 +27,7 @@ class Chart extends React.Component{
 
 		return(
 			<div className = "charts-">
+				{/* If there are multiple event streams we can have multiple charts */}
 				{eventStreamList.getList().map( (v, k) => {
 					
 					const data = {

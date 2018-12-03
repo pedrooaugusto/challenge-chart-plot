@@ -19,9 +19,11 @@
 
 9. Test everything
 
-10. Write Tests
+10. Write Documentation
+
+11. Write Tests
 	7.1 Write a eventstream geneator
 
-11. Push to github
+12. Push to github
 
-12. Host on github pages or google app engine
+13. Host on github pages or google app engine

@@ -45,6 +45,7 @@
 	bottom: -5px;
 	border-radius: 3px;
 	cursor: row-resize;
+	z-index: 9;
 }
 
 
@@ -62,7 +63,6 @@
 .editor-wrapper .resize-btn:before{
 	top: 3px;
 }
-
 
 .editor-wrapper .resize-btn:after{
 	top: 5px;
