@@ -3,9 +3,9 @@
 
 /* Options to apply direct to Char instance */
 export const chartDefaultOptions = {
-
+	
 	legend: false,
-
+	
 	legendCallback: function (chart) {
 		const lis = chart.data.datasets.map(dataset => {	
 			return `<li style = "color:${dataset.backgroundColor}";>

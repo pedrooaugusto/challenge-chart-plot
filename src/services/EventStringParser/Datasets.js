@@ -1,5 +1,5 @@
 /**
- * @desc This function represents a *LIST* 
+ * @desc This class represents a *LIST* 
  * of ChartJS dataset objects, each dataset 
  * represents one line in the chart.
 */

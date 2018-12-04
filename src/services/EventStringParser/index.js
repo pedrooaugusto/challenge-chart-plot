@@ -1,9 +1,8 @@
-/*
-	Here is where the magic happens!
-
-	Takes a array of event streams and
-	transform it into a valid dataset
-	to be used int ChartJS.
+/**
+ * @desc This class is responsable
+ * for transforming a 'relaxed json'
+ * string into a valid dataset array
+ * accpeted by the ChartJS library.
 */
 
 import JSON5 from 'json5';
@@ -19,18 +18,16 @@ export default class EventStringParser{
 		this.jsonEventList = jsonEventList;
 	}
 
-	/*
-		Converts a raw string from ace code editor
-		into a valid JSON string with all strings
-		and keys between double quotes and comma
-		between events.
-
-		Then converts that new string into
-		js array of events.
-
-		And finally converts that array of events
-		into a valid dataset object to be used in
-		ChartJS.
+	/**
+	 * @desc Converts a raw string from ace code
+	 * editor into a valid JSON string with all
+	 * strings and keys between double quotes
+	 * and comma between events.
+	 * Then converts that new string into a js 
+	 * array objects.
+	 * And finally converts that array of events
+	 * into a valid dataset object to be used in
+	 * ChartJS.
 	*/
 	jsonStringToEventArray(){
 		const asJsonArray     = '[' + this.jsonEventList.replace(/}\s*{/g, '},{') + ']';
@@ -38,8 +35,20 @@ export default class EventStringParser{
 		this.events = asPlainJSObject;
 	}
 
-	/* Procces each event informed in the
-	   editor.
+	/**
+	 * @desc Processes each event informed
+	 * in the input field by calling the 
+	 * right routine for each one.
+	 *
+	 * Invalid event types are ignored.
+	 * 
+	 * @throws {NoOpenEventStream} if attempting to
+	 * process any event without a open event stream.
+	 *
+	 * @throws {AlreadyOpenEventStream} if attempting to
+	 * start a new event stream inside a existing one.
+	 *
+	 * @return {null} if everything goes fine.
 	*/
 	process(){
 		
@@ -88,7 +97,22 @@ export default class EventStringParser{
 		return null;
 	}
 
-	/* Checking for some crazy situations */
+	/** 
+	 * @desc Check for some structure erros in 
+	 * the array of events, like starting an 
+	 * event of type start inside an already open
+	 * event stream.
+	 *
+	 * @param {String} type type of the event
+	 *
+	 * @throws {NoOpenEventStream} if attempting to
+	 * process any event without a open event stream.
+	 *
+	 * @throws {AlreadyOpenEventStream} if attempting to
+	 * start a new event stream inside a existing one.
+	 *
+	 * @return {null} if everything goes fine.
+	*/
 	canPerformEvent(type){
 
 		const noActiveEventStream = this.list.length === 0 || this.top.fineshed;
@@ -105,6 +129,13 @@ export default class EventStringParser{
 		return null;
 	}
 
+	/**
+	 * @desc Returns a list with all processed
+	 * event stream, if theres none return a list
+	 * with one empty event stream.
+	 *
+	 * @return {Array} list of processed event streams.
+	*/
 	getList(){
 		
 		if(this.list.length > 0)
