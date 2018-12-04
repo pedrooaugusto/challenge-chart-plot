@@ -2,7 +2,7 @@
 
 
 /* Options to apply direct to Char instance */
-export const common = {
+export const chartDefaultOptions = {
 
 	legend: false,
 
@@ -69,7 +69,7 @@ export const common = {
 }
 
 /* common options to all datasets */
-export const commonDataset = {
+export const commonDatasetOptions = {
 	fill: false,
 	lineTension: 0.1,
 	borderCapStyle: 'butt',

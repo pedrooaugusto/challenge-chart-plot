@@ -4,6 +4,14 @@
 	justify-content: space-between;
 }
 
+.chart-wrapper:last-child{
+	margin-bottom: 60px;
+}
+
+.chart-wrapper:first-child{
+	margin-bottom: 0px;
+}
+
 .line-chart-wrapper{
 	width: 74%;
 }

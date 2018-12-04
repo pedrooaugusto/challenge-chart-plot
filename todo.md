@@ -17,12 +17,19 @@
 
 8. Code Editor scrollbar - (✔)
 
+9. Improve code quality - 85%
+	* PropTypes - ok
+	* Exceptions - ok 
+	* Comment Functions - 45%
+	* Folder Structure - ok
+	* Transform resize feature in HOC
+
 9. Test everything
 
 10. Write Documentation
 
 11. Write Tests
-	7.1 Write a eventstream geneator
+	8.1 Write a eventstream geneator
 
 12. Push to github
 

@@ -1,5 +1,8 @@
 import React from 'react';
+
 import AceEditor from 'react-ace';
+import PropTypes from 'prop-types';
+
 import 'brace/mode/java';
 import 'brace/theme/monokai';
 import './style.css';
@@ -66,30 +69,34 @@ class CodeEditor extends React.Component{
 		return (
 			<div 
 				className = "editor-wrapper"
-				ref = {el => this.editorWrapper = el}>
+				ref 	  = {el => this.editorWrapper = el}>
 				<AceEditor
-				    mode = "java"
-				    theme = "monokai"
-				    name = "custom_ace_editor"
-				    width = "100%"
-				    onChange = {this.props.onChange}
-				    height = "100%"
-				    fontSize = "15px"
-				    value = {this.props.value}
+				    mode            = "java"
+				    theme           = "monokai"
+				    name            = "custom_ace_editor"
+				    width           = "100%"
+				    onChange        = {this.props.onChange}
+				    height          = "100%"
+				    fontSize        = "15px"
+				    value           = {this.props.value}
 				    showPrintMargin = {false}
-				    wrapEnabled = {true}
-				    editorProps={{$blockScrolling: true}}
-					style = {{
-						lineHeight: '24px'
-					}}
+				    wrapEnabled     = {true}
+				    editorProps     = {{$blockScrolling: true}}
+					style           = {{lineHeight: '24px'}}
 				/>
 	  			<span 
-	  				className = "resize-btn"
-	  				onMouseDown = {this.onMouseDown}>
+	  				className    = "resize-btn"
+	  				onMouseDown  = {this.onMouseDown}>
 	  			</span>
   			</div>
 		);
 	}
-}
+};
+
+CodeEditor.propTypes = {
+	defaultValue: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired
+};
 
 export default CodeEditor;
