@@ -44,6 +44,7 @@ class Main extends React.Component {
 		this.buttonClick();
 	}
 
+	/* updates editor value */
 	editorOnChange = value => {
 
 		this.setState( prevState => ({

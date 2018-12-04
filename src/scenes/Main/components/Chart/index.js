@@ -1,6 +1,14 @@
+/**
+ * @desc This component displays N charts
+ * and their custom captions accordingly 
+ * with the preprocessed value given in
+ * <CodeEditor/>.
+*/
+
 import React from 'react';
 import {Line} from 'react-chartjs-2';
 import PropTypes from 'prop-types';
+
 import {chartDefaultOptions} from '../../../../services/Utils/chart.js';
 import './style.css';
 
@@ -13,7 +21,19 @@ class Chart extends React.Component{
 	}
 
 
-	/* Render custom captions for each chart */
+	/**
+	 * @desc Since ChartJS does not permite too 
+	 * much customization on the captions, we 
+	 * created our own custom caption.
+	 * This function iterates over all ChartsJS
+	 * references and for each one asks it to generate 
+	 * their corresponding HTML String caption, 
+	 * then we put that string int the corresponding
+	 * caption box ( div.legend-wrapper ).
+	 *
+	 * This needs to happen every time component
+	 * updates.
+	*/
 	componentDidUpdate(prevProps, prevState){
 		for(let i = 0; i < this.chartRef.length; i++)
 			if( this.chartRef[i] && this.legendRef[i] )
@@ -26,6 +46,7 @@ class Chart extends React.Component{
 
 		return(
 			<div className = "charts-">
+				{/* Support for N charts depending on the number of start events */}
 				{eventStreamList.getList().map( (v, k) => {
 					
 					const data = {

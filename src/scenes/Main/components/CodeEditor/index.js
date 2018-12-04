@@ -1,3 +1,11 @@
+/**
+ * @desc This component is a *resizable* wrapper
+ * for the <AcecodeEditor/>.
+ * 
+ * Remember to transform the resize feature 
+ * in a HOC.
+*/
+
 import React from 'react';
 
 import AceEditor from 'react-ace';
@@ -12,10 +20,10 @@ class CodeEditor extends React.Component{
 	/* Saving the pivot before resizing takes place */
 	onMouseDown = ({target: el}) => {
 		
-		let resizeYpivot = el.offsetParent.offsetTop + el.offsetTop;
+		const resizeYpivot = el.offsetParent.offsetTop + el.offsetTop;
 		this.resizeYpivot = resizeYpivot;
 
-		let codeCurrentHeight = this.editorWrapper.style.height || "235px";
+		const codeCurrentHeight = this.editorWrapper.style.height || "235px";
 		this.codeCurrentHeight = parseInt(codeCurrentHeight, 10);
 
 		this.resizing = true;
@@ -34,7 +42,7 @@ class CodeEditor extends React.Component{
 
 	/* Tracking mouse movement during resizing */
 	onMouseMove = (evt) => {
-		if(this.resizing === true){
+		if( this.resizing === true ){
 
 			const currHeight = this.codeCurrentHeight;
 			
@@ -43,7 +51,7 @@ class CodeEditor extends React.Component{
 				const nh = evt.clientY - this.resizeYpivot;
 				
 				/* LIMIT: make the chart always visible */
-				if (nh + currHeight <= 260)
+				if ( nh + currHeight <= 260 )
 					this.editorWrapper.style.height = currHeight + nh + "px";
 			}else{
 				
