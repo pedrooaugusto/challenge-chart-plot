@@ -12,6 +12,13 @@ import EventStream from './EventStream';
 export default class EventStringParser{
 	
 	constructor(jsonEventList){
+
+		/* Check input size */
+		if( jsonEventList && jsonEventList.length > 55000 ){
+			throw new Error(`This input is too large it cannot be processed at the browser.
+				Max Input size: ${jsonEventList.length}, Input size: 55000`);
+		}
+		
 		this.list 	       = [];
 		this.events        = undefined;
 		this.top 	       = null;
@@ -51,7 +58,7 @@ export default class EventStringParser{
 	 * @return {null} if everything goes fine.
 	*/
 	process(){
-		
+
 		this.jsonStringToEventArray();
 
 		for(let evt of this.events){
