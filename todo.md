@@ -26,11 +26,11 @@
 
 9. Test everything - (✔)
 
-10. Implementing too much data feature - pending
+10. Implement input too big feature - (✔)
 
 11. Write Documentation - (✔)
 
-12. Fix x axis time start at MS Edge - pending
+12. Fix x axis value at MS Edge - pending
 
 13. Write Tests - 95%
 	* Write a eventstream geneator - pending
