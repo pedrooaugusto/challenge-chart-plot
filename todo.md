@@ -24,13 +24,17 @@
 	* Folder Structure - ok
 	* Transform resize feature in HOC - pending
 
-9. Test everything
+9. Test everything - (✔)
 
-10. Write Documentation
+10. Implementing too much data feature - pending
 
-11. Write Tests - 95%
+11. Write Documentation - (✔)
+
+12. Fix x axis time start at MS Edge - pending
+
+13. Write Tests - 95%
 	* Write a eventstream geneator - pending
 
-12. Push to github
+14. Push to github - (✔)
 
-13. Host on github pages or google app engine
+15. Host on github pages or google app engine
