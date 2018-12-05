@@ -61,6 +61,7 @@ class Chart extends React.Component{
 									width   = {600}
 									height  = {265} 
 									key     = {k}
+									ctx     = {undefined}
 									options = {chartDefaultOptions}
 									ref     = {ref => this.chartRef[k] = ref}/>
 							</div>

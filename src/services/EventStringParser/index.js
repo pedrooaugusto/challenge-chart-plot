@@ -56,9 +56,9 @@ export default class EventStringParser{
 
 		for(let evt of this.events){
 
-			const {type} = evt;
+			const err = this.canPerformEvent(evt);
 
-			const err = this.canPerformEvent(type);
+			const {type} = evt;
 			
 			if(err){
 				this.list = [];
@@ -113,9 +113,12 @@ export default class EventStringParser{
 	 *
 	 * @return {null} if everything goes fine.
 	*/
-	canPerformEvent(type){
+	canPerformEvent({type, timestamp}){
 
 		const noActiveEventStream = this.list.length === 0 || this.top.fineshed;
+
+		if(!type || !timestamp)
+			throw new Error(`The fields type and timestamp are required for all events.`);
 
 		if( (type === "start" && !noActiveEventStream) )
 
@@ -137,7 +140,6 @@ export default class EventStringParser{
 	 * @return {Array} list of processed event streams.
 	*/
 	getList(){
-		
 		if(this.list.length > 0)
 			return this.list;
 		return [new EventStream({})];

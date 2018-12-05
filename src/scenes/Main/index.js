@@ -28,7 +28,7 @@ class Main extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			hasError: false,
+			hasError: {},
 			codeEditor:{
 				defaultValue,
 				value: defaultValue
@@ -60,7 +60,7 @@ class Main extends React.Component {
 	dismissError = () => {
 		this.setState(prev => ({
 			...prev,
-			hasError: false
+			hasError: {}
 		}));
 	}
 
@@ -89,8 +89,6 @@ class Main extends React.Component {
 				...prev,
 				hasError: err
 			}));
-
-			console.log(err);
 		}
 	}
 
@@ -106,8 +104,10 @@ class Main extends React.Component {
 					onChange =  {this.editorOnChange}
 					{...this.state.codeEditor} />
 				
-				<Chart 
-					{...this.state.chart}/>
+				{!this.props.test && 
+					(<Chart 
+						{...this.state.chart}/>)
+				}
 
 				<Footer 
 					buttonClick = {this.buttonClick}/>

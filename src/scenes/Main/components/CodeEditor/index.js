@@ -69,8 +69,8 @@ class CodeEditor extends React.Component{
 
 	/* Unregistering resize mouse events */
 	componentWillUnmount(){
-		document.body.removeEventListener('mouseup');
-		document.body.removeEventListener('mousemove');
+		document.body.removeEventListener('mouseup', this.onMouseUp);
+		document.body.removeEventListener('mousemove', this.onMouseMove);
 	}
 
 	render(){
@@ -102,7 +102,7 @@ class CodeEditor extends React.Component{
 };
 
 CodeEditor.propTypes = {
-	defaultValue: PropTypes.string.isRequired,
+	defaultValue: PropTypes.string,
 	value: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired
 };

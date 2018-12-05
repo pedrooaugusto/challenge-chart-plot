@@ -7,7 +7,7 @@
 3. Start with default state - (✔)
 
 4. Create Footer Section - (✔)
-	4.1 Fix it at the bottom - (✔)
+	* Fix it at the bottom - (✔)
 
 5. Adjust x axis [time] values - (✔)
 
@@ -17,19 +17,19 @@
 
 8. Code Editor scrollbar - (✔)
 
-9. Improve code quality - 85%
+9. Improve code quality - 95%
 	* PropTypes - ok
 	* Exceptions - ok 
-	* Comment Functions - 45%
+	* Comment Functions - ok
 	* Folder Structure - ok
-	* Transform resize feature in HOC
+	* Transform resize feature in HOC - pending
 
 9. Test everything
 
 10. Write Documentation
 
-11. Write Tests
-	8.1 Write a eventstream geneator
+11. Write Tests - 95%
+	* Write a eventstream geneator - pending
 
 12. Push to github
 

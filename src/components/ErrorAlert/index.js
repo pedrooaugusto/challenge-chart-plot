@@ -9,10 +9,11 @@ import PropTypes from 'prop-types';
 import './style.css';
 
 function ErrorAlert(props){
+	const open = props.error.hasOwnProperty('message');
 	return(
 		<React.Fragment>
-			<div className = {`modal-overlay${props.error ? " open" : ""}`}></div>
-			<div className = {`modal${props.error ? " open" : ""}`}>
+			<div className = {`modal-overlay${open ? " open" : ""}`}></div>
+			<div className = {`modal${open ? " open" : ""}`}>
 				<div className = "modal-content">
 					<div className = "title">An error has occurred!</div>
 					<div className = "message">
@@ -32,7 +33,7 @@ function ErrorAlert(props){
 };
 
 ErrorAlert.propTypes = {
-	error: PropTypes.bool.isRequired,
+	error: PropTypes.object.isRequired,
 	dismiss: PropTypes.func.isRequired
 };
 
